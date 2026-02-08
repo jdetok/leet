@@ -10,6 +10,9 @@ func main() {
 
 	arr2 := intPtrs(1, 2, 3, nil, nil, 4, 5)
 	printTree(getTreeNode(arr2, 0), "", false)
+	
+	arr3 := intPtrs(1, 2, 3, 4, 5, 6, 7, nil, 9)
+	printTree(getTreeNode(arr3, 0), "", false)
 }
 
 type treeNode struct {
@@ -29,17 +32,19 @@ func getTreeNode(arr []*int, i int) *treeNode {
 }
 
 // print the tree structure recursively, formatted as follows
-// |___ 1
+// |--- 1
 //      |--- 2
-//      |___ 3
+//      |--- 3
 //           |--- 4
-//           |___ 5
+//           |--- 5
 func printTree(n *treeNode, prefix string, isLeft bool) {
 	if n == nil { return }
 
 	fmt.Println(prefix + func() string {
-		if isLeft { return "|--- " }
-		return "|___ "
+		// if isLeft { return "|--- " }
+		// return "|___ "
+
+		return "|--- " 
 	}() + fmt.Sprint(n.val))
 
 	printTree(n.left, prefix + func() string {
