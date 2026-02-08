@@ -1,0 +1,61 @@
+package main
+
+import (
+	"fmt"
+)
+
+type treeNode struct {
+	val int
+	left *treeNode
+	right *treeNode
+}
+
+func getTreeNode(arr []*int, i int) *treeNode {
+	if i >= len(arr) || arr[i] == nil { return nil }
+	return &treeNode{
+		*arr[i],
+		getTreeNode(arr, 2 * i + 1),
+		getTreeNode(arr, 2 * i + 2),
+	}
+}
+
+func printTree(n *treeNode, prefix string, isLeft bool) {
+	if n == nil { return }
+
+	fmt.Println(prefix + func() string {
+		if isLeft { return "|--- " }
+		return "|___ "
+	}() + fmt.Sprint(n.val))
+
+	printTree(n.left, prefix + func() string {
+		if isLeft { return "|    " }
+		return "     "
+	}(), true)
+	
+	printTree(n.right, prefix + func() string {
+		if isLeft { return "|    " }
+		return "     "
+	}(), false)
+}
+
+// pass int literals or nil, get slice of int ptrs
+func intPtrs(arr ...any) []*int {
+	var arrPtrs []*int
+	for _, n := range arr {
+		if n == nil {
+			arrPtrs = append(arrPtrs, nil)
+		}
+
+		nInt, ok := n.(int)
+		if ok { arrPtrs = append(arrPtrs, &nInt) }
+	}
+	return arrPtrs
+}
+
+func main() {
+	arr := intPtrs(1, 2, 2, 3, 4, nil, 5, 6, 9, nil, 10, 11, nil, 11)
+	printTree(getTreeNode(arr, 0), "", false)
+
+	arr2 := intPtrs(3, 9, 20, nil, nil, 15, 7)
+	printTree(getTreeNode(arr2, 0), "", false)
+}
