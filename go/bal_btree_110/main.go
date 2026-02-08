@@ -2,23 +2,54 @@ package main
 
 import (
 	"fmt"
+	"math"
 )
 
 func main() {
-	arr := intPtrs(1, 2, 2, 3, 4, nil, 5, 6, 9, nil, 10, 11, nil, 11)
-	printTree(getTreeNode(arr, 0), "", false)
 
-	arr2 := intPtrs(1, 2, 3, nil, nil, 4, 5)
-	printTree(getTreeNode(arr2, 0), "", false)
-	
-	arr3 := intPtrs(1, 2, 3, 4, 5, 6, 7, nil, 9)
-	printTree(getTreeNode(arr3, 0), "", false)
+	arrs := [][]*int{
+		intPtrs(3, 9, 20, nil, nil, 15, 7),
+		intPtrs(1, 2, 2, 3, 3, nil, nil, 4, 4), 
+		// intPtrs(1, 2, 3, nil, nil, 4, 5),
+		// intPtrs(1, 2, 3, 4, 5, 6, 7, nil, 9),
+	}
+
+	for i, arr := range arrs {
+		fmt.Printf("building tree %d/%d...\n", i+1, len(arrs))
+		tree := getTreeNode(arr, 0)
+		printTree(tree, "", false)
+		fmt.Printf("balanced: %v | max depth: %d\n", tree.isBalanced(), tree.getDepth())
+		if i < len(arrs) - 1 { fmt.Println() }
+	}
 }
 
 type treeNode struct {
 	val int
 	left *treeNode
 	right *treeNode
+}
+
+func (n *treeNode) getDepth() int {
+	if n == nil { 
+		return 0
+	}
+
+	return (int(math.Max(float64(n.left.getDepth()), float64(n.right.getDepth()))) + 1)	
+}
+
+func (n *treeNode) isBalanced() bool {
+	if n == nil { 
+		return true
+	}
+
+	ld := n.left.getDepth() 
+	rd := n.right.getDepth()
+
+	if ld > (rd + 1) || ld < (rd - 1) || rd > (ld + 1) || rd < (ld - 1) {
+		return false
+	}
+
+	return n.left.isBalanced() && n.right.isBalanced()
 }
 
 // pass array once, recursively builds tree structure
