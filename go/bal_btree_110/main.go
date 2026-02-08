@@ -40,12 +40,7 @@ func getTreeNode(arr []*int, i int) *treeNode {
 func printTree(n *treeNode, prefix string, isLeft bool) {
 	if n == nil { return }
 
-	fmt.Println(prefix + func() string {
-		// if isLeft { return "|--- " }
-		// return "|___ "
-
-		return "|--- " 
-	}() + fmt.Sprint(n.val))
+	fmt.Printf("%s|--- %v\n", prefix, n.val)
 
 	printTree(n.left, prefix + func() string {
 		if isLeft { return "|    " }
