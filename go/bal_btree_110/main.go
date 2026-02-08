@@ -4,12 +4,21 @@ import (
 	"fmt"
 )
 
+func main() {
+	arr := intPtrs(1, 2, 2, 3, 4, nil, 5, 6, 9, nil, 10, 11, nil, 11)
+	printTree(getTreeNode(arr, 0), "", false)
+
+	arr2 := intPtrs(1, 2, 3, nil, nil, 4, 5)
+	printTree(getTreeNode(arr2, 0), "", false)
+}
+
 type treeNode struct {
 	val int
 	left *treeNode
 	right *treeNode
 }
 
+// pass array once, recursively builds tree structure
 func getTreeNode(arr []*int, i int) *treeNode {
 	if i >= len(arr) || arr[i] == nil { return nil }
 	return &treeNode{
@@ -19,6 +28,12 @@ func getTreeNode(arr []*int, i int) *treeNode {
 	}
 }
 
+// print the tree structure recursively, formatted as follows
+// |___ 1
+//      |--- 2
+//      |___ 3
+//           |--- 4
+//           |___ 5
 func printTree(n *treeNode, prefix string, isLeft bool) {
 	if n == nil { return }
 
@@ -50,12 +65,4 @@ func intPtrs(arr ...any) []*int {
 		if ok { arrPtrs = append(arrPtrs, &nInt) }
 	}
 	return arrPtrs
-}
-
-func main() {
-	arr := intPtrs(1, 2, 2, 3, 4, nil, 5, 6, 9, nil, 10, 11, nil, 11)
-	printTree(getTreeNode(arr, 0), "", false)
-
-	arr2 := intPtrs(3, 9, 20, nil, nil, 15, 7)
-	printTree(getTreeNode(arr2, 0), "", false)
 }
